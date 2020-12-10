@@ -8,22 +8,32 @@ PORT = 10008
 columnStr = str("0000")
 readStr = ""
 
-while True:
+run = True
+
+while run:
     with open("column8.txt", "r") as readFile:
         readStr = readFile.read()
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
         s.listen()
         conn, addr = s.accept()
-        print('Connected by', addr)
         data = conn.recv(1024).decode()
-        if data != columnStr and data:
+        if data == "END":
+            s.close()
+            readFile.close()
+            with open("column8.txt", "r+") as writeFile:
+                readStr = writeFile.read()
+                writeFile.seek(0)
+                writeFile.write("0000")
+                columnStr = data
+                writeFile.close()
+            run = False
+        if data != columnStr and data and data != "END":
             with open("column8.txt", "r+") as writeFile:
                 readStr = writeFile.read()
                 writeFile.seek(0)
                 writeFile.write(data)
                 writeFile.seek(0)
                 readStr = writeFile.read()
-                print(readStr)
                 columnStr = data
-        s.close()
+                writeFile.close()
