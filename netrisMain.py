@@ -215,6 +215,57 @@ def sendGameOver():
     print("Game over!")
     exit(0)
 
+def deleteRows():
+    values0 = values1 = values2 = values3 = values4 = values5 = values6 = values7 = values8 = values9 = ""
+    for x in range(MAX_HEIGHT):
+        if column0[x] == column1[x] == column2[x] == column3[x] == column4[x] == column5[x] == column6[x] == column7[x] == column8[x] == column9[x] == "1":
+            for i in range(MAX_HEIGHT):
+                if i < x:
+                    values0 = values0 + column0[i]
+                    values1 = values1 + column1[i]
+                    values2 = values2 + column2[i]
+                    values3 = values3 + column3[i]
+                    values4 = values4 + column4[i]
+                    values5 = values5 + column5[i]
+                    values6 = values6 + column6[i]
+                    values7 = values7 + column7[i]
+                    values8 = values8 + column8[i]
+                    values9 = values9 + column9[i]
+                elif i >= x and i != MAX_HEIGHT - 1:
+                    values0 = values0 + column0[i + 1]
+                    values1 = values1 + column1[i + 1]
+                    values2 = values2 + column2[i + 1]
+                    values3 = values3 + column3[i + 1]
+                    values4 = values4 + column4[i + 1]
+                    values5 = values5 + column5[i + 1]
+                    values6 = values6 + column6[i + 1]
+                    values7 = values7 + column7[i + 1]
+                    values8 = values8 + column8[i + 1]
+                    values9 = values9 + column9[i + 1]
+                elif i >= x and i == MAX_HEIGHT - 1:
+                    values0 = values0 + "0"
+                    values1 = values1 + "0"
+                    values2 = values2 + "0"
+                    values3 = values3 + "0"
+                    values4 = values4 + "0"
+                    values5 = values5 + "0"
+                    values6 = values6 + "0"
+                    values7 = values7 + "0"
+                    values8 = values8 + "0"
+                    values9 = values9 + "0"
+            sendPlay(0, values0)
+            sendPlay(1, values1)
+            sendPlay(2, values2)
+            sendPlay(3, values3)
+            sendPlay(4, values4)
+            sendPlay(5, values5)
+            sendPlay(6, values6)
+            sendPlay(7, values7)
+            sendPlay(8, values8)
+            sendPlay(9, values9)
+            getBoard()
+                    
+
 # Send block placement to server based on user selection of position
 def playBlock(playColumn0, playColumn1, playColumn2, blockVal, play):
 
@@ -460,7 +511,7 @@ netrominos = ["I","O","T","S","Z","J","L"]
 
 while True:
     blockVal = random.randint(6)
-    
+
     print("[" + column0[3] + "] " + "[" + column1[3] + "] " + "[" + column2[3] + "] " + "[" + column3[3] + "] " + "[" + column4[3] + "] " + "[" + column5[3] + "] " + "[" + column6[3] + "] " + "[" + column7[3] + "] " + "[" + column8[3] + "] " + "[" + column9[3] + "] ")
     print("[" + column0[2] + "] " + "[" + column1[2] + "] " + "[" + column2[2] + "] " + "[" + column3[2] + "] " + "[" + column4[2] + "] " + "[" + column5[2] + "] " + "[" + column6[2] + "] " + "[" + column7[2] + "] " + "[" + column8[2] + "] " + "[" + column9[2] + "] ")
     print("[" + column0[1] + "] " + "[" + column1[1] + "] " + "[" + column2[1] + "] " + "[" + column3[1] + "] " + "[" + column4[1] + "] " + "[" + column5[1] + "] " + "[" + column6[1] + "] " + "[" + column7[1] + "] " + "[" + column8[1] + "] " + "[" + column9[1] + "] ")
@@ -499,3 +550,5 @@ while True:
         playBlock(column9, column0, column1, blockVal, play)
     
     getBoard()
+    for x in range(MAX_HEIGHT):
+        deleteRows()
