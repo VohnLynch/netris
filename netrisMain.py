@@ -4,21 +4,23 @@ from numpy import random
 import socket
 import threading
 import subprocess
-import time
 
+# Height of each column, can be changed to alter board height, width is fixed to 10
+MAX_HEIGHT = 10
 
-column0 = ["0","0","0","0"]
-column1 = ["0","0","0","0"]
-column2 = ["0","0","0","0"]
-column3 = ["0","0","0","0"]
-column4 = ["0","0","0","0"]
-column5 = ["0","0","0","0"]
-column6 = ["0","0","0","0"]
-column7 = ["0","0","0","0"]
-column8 = ["0","0","0","0"]
-column9 = ["0","0","0","0"]
+# Initialize each column list
+column0 = ["0"]*MAX_HEIGHT
+column1 = ["0"]*MAX_HEIGHT
+column2 = ["0"]*MAX_HEIGHT
+column3 = ["0"]*MAX_HEIGHT
+column4 = ["0"]*MAX_HEIGHT
+column5 = ["0"]*MAX_HEIGHT
+column6 = ["0"]*MAX_HEIGHT
+column7 = ["0"]*MAX_HEIGHT
+column8 = ["0"]*MAX_HEIGHT
+column9 = ["0"]*MAX_HEIGHT
 
-# Series of subprocess functions that run each of the 10 servers upon startup
+# Series of subprocess functions that run each of the 20 servers upon startup
 def col0():
     subprocess.run(['python', 'column0.py'])
 
@@ -79,7 +81,7 @@ def read8():
 def read9():
     subprocess.run(['python', 'read9.py'])
 
-# Create a set of 10 threads and start the servers
+# Create a set of 20 threads and start the servers
 c0 = threading.Thread(target = col0)
 c1 = threading.Thread(target = col1)
 c2 = threading.Thread(target = col2)
@@ -130,9 +132,6 @@ PORT = 0
 sendVal1 = ""
 sendVal2 = ""
 sendVal3 = ""
-
-# Height of each column, can be changed to alter board height, width is fixed to 10
-MAX_HEIGHT = 4
 
 # Send the values to be input to one column
 def sendPlay(column, values):
@@ -215,6 +214,7 @@ def sendGameOver():
     print("Game over!")
     exit(0)
 
+# Detect filled rows, delete their contents/move every block down 1, send new board to nodes
 def deleteRows():
     values0 = values1 = values2 = values3 = values4 = values5 = values6 = values7 = values8 = values9 = ""
     for x in range(MAX_HEIGHT):
@@ -505,20 +505,24 @@ def playBlock(playColumn0, playColumn1, playColumn2, blockVal, play):
             sendVal1 = ""
             sendVal2 = ""
 
+# Initialize values for user input and block generation
 play = ""
 blockVal = 0
 netrominos = ["I","O","T","S","Z","J","L"]
 
+# Loop through the game infinitely, or until a board violation is played
 while True:
     blockVal = random.randint(6)
 
-    print("[" + column0[3] + "] " + "[" + column1[3] + "] " + "[" + column2[3] + "] " + "[" + column3[3] + "] " + "[" + column4[3] + "] " + "[" + column5[3] + "] " + "[" + column6[3] + "] " + "[" + column7[3] + "] " + "[" + column8[3] + "] " + "[" + column9[3] + "] ")
-    print("[" + column0[2] + "] " + "[" + column1[2] + "] " + "[" + column2[2] + "] " + "[" + column3[2] + "] " + "[" + column4[2] + "] " + "[" + column5[2] + "] " + "[" + column6[2] + "] " + "[" + column7[2] + "] " + "[" + column8[2] + "] " + "[" + column9[2] + "] ")
-    print("[" + column0[1] + "] " + "[" + column1[1] + "] " + "[" + column2[1] + "] " + "[" + column3[1] + "] " + "[" + column4[1] + "] " + "[" + column5[1] + "] " + "[" + column6[1] + "] " + "[" + column7[1] + "] " + "[" + column8[1] + "] " + "[" + column9[1] + "] ")
-    print("[" + column0[0] + "] " + "[" + column1[0] + "] " + "[" + column2[0] + "] " + "[" + column3[0] + "] " + "[" + column4[0] + "] " + "[" + column5[0] + "] " + "[" + column6[0] + "] " + "[" + column7[0] + "] " + "[" + column8[0] + "] " + "[" + column9[0] + "] ")
-
+    # Print content of columns to the terminal, from top to bottom
+    for x in reversed(range(MAX_HEIGHT)):
+        print("[" + column0[x] + "] " + "[" + column1[x] + "] " + "[" + column2[x] + "] " + "[" + column3[x] + "] " + "[" + column4[x] + "] " + "[" + column5[x] + "] " + "[" + column6[x] + "] " + "[" + column7[x] + "] " + "[" + column8[x] + "] " + "[" + column9[x] + "] ")
+    
+    # Prompt user for block placement choice
     print("Next block: " + netrominos[blockVal])
     play = int(input("Which column would you like to place the block in? \n"))
+
+    # Change which columns will be altered based on user choice
     if play == 0:
         playBlock(column0, column1, column2, blockVal, play)
     
@@ -549,6 +553,9 @@ while True:
     if play == 9:
         playBlock(column9, column0, column1, blockVal, play)
     
+    # Update local columns from remote file
     getBoard()
+
+    # Run the delete function once for each row to ensure all eligible rows are deleted
     for x in range(MAX_HEIGHT):
         deleteRows()
