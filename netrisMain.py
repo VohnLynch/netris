@@ -4,6 +4,7 @@ from numpy import random
 import socket
 import threading
 import subprocess
+from termcolor import colored
 
 # Height of each column, can be changed to alter board height, width is fixed to 10
 MAX_HEIGHT = 10
@@ -264,7 +265,63 @@ def deleteRows():
             sendPlay(8, values8)
             sendPlay(9, values9)
             getBoard()
-                    
+
+# Read values from each of the columns, print out a display representing the game board
+def printBoard():
+    for x in reversed(range(MAX_HEIGHT)):
+        print("[", end="")
+        if column0[x] == "0":
+            print(colored('\u25A0', 'white'), end="")
+        else:
+            print(colored('\u25A0', 'red'), end="")
+        print("] [", end="")
+        if column1[x] == "0":
+            print(colored('\u25A0', 'white'), end="")
+        else:
+            print(colored('\u25A0', 'red'), end="")
+        print("] [", end="")
+        if column2[x] == "0":
+            print(colored('\u25A0', 'white'), end="")
+        else:
+            print(colored('\u25A0', 'red'), end="")
+        print("] [", end="")
+        if column3[x] == "0":
+            print(colored('\u25A0', 'white'), end="")
+        else:
+            print(colored('\u25A0', 'red'), end="")
+        print("] [", end="")
+        if column4[x] == "0":
+            print(colored('\u25A0', 'white'), end="")
+        else:
+            print(colored('\u25A0', 'red'), end="")
+        print("] [", end="")
+        if column5[x] == "0":
+            print(colored('\u25A0', 'white'), end="")
+        else:
+            print(colored('\u25A0', 'red'), end="")
+        print("] [", end="")
+        if column6[x] == "0":
+            print(colored('\u25A0', 'white'), end="")
+        else:
+            print(colored('\u25A0', 'red'), end="")
+        print("] [", end="")
+        if column7[x] == "0":
+            print(colored('\u25A0', 'white'), end="")
+        else:
+            print(colored('\u25A0', 'red'), end="")
+        print("] [", end="")
+        if column8[x] == "0":
+            print(colored('\u25A0', 'white'), end="")
+        else:
+            print(colored('\u25A0', 'red'), end="")
+        print("] [", end="")
+        if column9[x] == "0":
+            print(colored('\u25A0', 'white'), end="")
+        else:
+            print(colored('\u25A0', 'red'), end="")
+        print("]")
+    print("---------------------------------------")
+    print("[0] [1] [2] [3] [4] [5] [6] [7] [8] [9]")
 
 # Send block placement to server based on user selection of position
 def playBlock(playColumn0, playColumn1, playColumn2, blockVal, play):
@@ -514,10 +571,9 @@ netrominos = ["I","O","T","S","Z","J","L"]
 while True:
     blockVal = random.randint(6)
 
-    # Print content of columns to the terminal, from top to bottom
-    for x in reversed(range(MAX_HEIGHT)):
-        print("[" + column0[x] + "] " + "[" + column1[x] + "] " + "[" + column2[x] + "] " + "[" + column3[x] + "] " + "[" + column4[x] + "] " + "[" + column5[x] + "] " + "[" + column6[x] + "] " + "[" + column7[x] + "] " + "[" + column8[x] + "] " + "[" + column9[x] + "] ")
-    
+    # Display the current board configuration
+    printBoard()
+
     # Prompt user for block placement choice
     print("Next block: " + netrominos[blockVal])
     play = int(input("Which column would you like to place the block in? \n"))
