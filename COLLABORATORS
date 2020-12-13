@@ -1,0 +1,23 @@
+Resources Referenced
+
+Most of the need for references in this project was due to my lack of understanding of python syntax/functionality.
+
+https://realpython.com/python-sockets/
+    Heavily aided in furthering understanding of python sockets, some sample code used as reference for basic server/client interaction.
+
+https://www.w3schools.com/python/default.asp
+    Generally assisted in clarification of python syntax, countless tutorials were referenced so I just linked the main page. w3schools is a godsend.
+
+https://stackoverflow.com/questions/5205575/how-do-i-get-an-empty-array-of-any-size-in-python
+    Offered a solution to initializing columns of arbitrary size when scalability was needed.
+
+https://stackoverflow.com/questions/39350300/run-multiple-servers-in-python-at-same-time-threading
+https://docs.python.org/3/library/subprocess.html
+    Helped to gain an understanding of the python threading and subprocess libraries which came into play for running servers.
+
+https://stackoverflow.com/questions/12813633/how-to-assert-two-list-contain-the-same-elements-in-python
+https://www.youtube.com/watch?v=6tNS--WetLI
+    Created a basis for my understanding of the unittest library, and helped me to correctly implement useful tests.
+
+https://pypi.org/project/termcolor/
+    Used for converting basis ascii output to a more colorful, school-spirit friendly one.
